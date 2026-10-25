@@ -391,20 +391,38 @@ function tools(it,list,L){
  btn('↑',function(){var p=it.previousElementSibling;if(p&&!p.hasAttribute('data-ed')){p.before(it);mark()}});
  btn('↓',function(){var n=it.nextElementSibling;if(n&&!n.hasAttribute('data-ed')){n.after(it);mark()}});
  btn('Copy',function(){var c=clean(it.cloneNode(true));it.after(c);decorate(list.parentNode);mark()});
- if(it.querySelector('img'))btn('Photo',function(){photo(it.querySelector('img'))});
- if(it.querySelector('a[href]'))btn('Link',function(){var a=it.querySelector('a[href]'),old=a.getAttribute('href');var nu=prompt('Paste the new link (website, Google Maps or booking):',old);if(nu&&nu!==old){it.querySelectorAll('a[href]').forEach(function(x){if(x.getAttribute('href')===old)x.setAttribute('href',nu.trim())});mark()}});
+ 
+ var isLine=it.matches('dl>div')||list.matches('ul.opts,ol.steps');
+ if(!isLine||it.querySelector('img'))btn(it.querySelector('img')?'Photo':'Add photo',function(){var im=it.querySelector('img');if(im){photo(im);return}
+  var fig=document.createElement('figure');fig.className='dayfig';fig.innerHTML='<img src="" alt="" loading="lazy" width="600" height="400"><figcaption>Add a caption</figcaption>';
+  var host=it.querySelector('.dbody')||it.querySelector('.vbody')||it.querySelector('.cbody')||it;var tb=host.querySelector(':scope>.edtools');if(tb)tb.before(fig);else{var t2=it.querySelector(':scope>.edtools');if(host===it&&t2)t2.before(fig);else host.appendChild(fig)}
+  decorate(fig.parentNode);photo(fig.querySelector('img'),function(ok){if(!ok)fig.remove()})});
+ if(it.querySelector('figure.dayfig'))btn('Remove photo',function(){if(confirm('Remove this photo?')){it.querySelector('figure.dayfig').remove();mark()}});
+ btn('Link',function(){link(it)});
  if(L[1]==='li'&&list.matches('ul.cards,ul.villas'))btn('Booked ✓',function(){var tg=it.querySelector('.cost')||it.querySelector('.tags .tag');if(tg){tg.textContent='Booked: '+(tg.textContent.replace(/^Booked:\s*/,''));mark()}});
  btn('Delete',function(){var sib=[].filter.call(list.children,function(c){return c.matches(L[1])&&!c.hasAttribute('data-ed')});if(sib.length<2){alert('Keep at least one here. Edit it instead.');return}if(confirm('Delete this?')){it.remove();mark()}},'del');
  it.appendChild(t);
 }
-function photo(img){
+function photo(img,cb){
  var f=document.createElement('input');f.type='file';f.accept='image/*';
- f.onchange=function(){var file=f.files[0];if(!file)return;
+ f.onchange=function(){var file=f.files[0];if(!file){cb&&cb(false);return}
   var W=+img.getAttribute('width')||600,H=+img.getAttribute('height')||400;
   var url=URL.createObjectURL(file),im=new Image();im.onload=function(){
    var c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d'),r=Math.max(W/im.width,H/im.height),w=im.width*r,h=im.height*r;
-   x.drawImage(im,(W-w)/2,(H-h)/2,w,h);img.src=c.toDataURL('image/jpeg',0.85);img.removeAttribute('srcset');URL.revokeObjectURL(url);mark()};im.src=url};
+   x.drawImage(im,(W-w)/2,(H-h)/2,w,h);img.src=c.toDataURL('image/jpeg',0.85);img.removeAttribute('srcset');URL.revokeObjectURL(url);mark();cb&&cb(true)};im.src=url};
  f.click();
+}
+var lastRange=null;
+document.addEventListener('selectionchange',function(){var s=getSelection();if(s.rangeCount&&!s.isCollapsed){var n=s.anchorNode;n=n&&(n.nodeType===1?n:n.parentElement);if(n&&n.closest('[contenteditable]'))lastRange=s.getRangeAt(0).cloneRange()}});
+function link(it){
+ var r=lastRange;if(r&&!it.contains(r.commonAncestorContainer))r=null;
+ if(r&&String(r)){var u=prompt('Link for "'+String(r).slice(0,40)+'":','https://');if(!u||u==='https://')return;var a=document.createElement('a');a.href=u.trim();a.target='_blank';a.rel='noopener';try{a.appendChild(r.extractContents());r.insertNode(a)}catch(e){}lastRange=null;mark();return}
+ var ex=it.querySelector('a[href]:not([data-ed] a)');
+ if(ex&&confirm('Change the existing link?\n\nOK = change it\nCancel = add a new link instead')){var old=ex.getAttribute('href');var nu=prompt('Paste the new link:',old);if(nu&&nu!==old){it.querySelectorAll('a[href]').forEach(function(x){if(x.getAttribute('href')===old)x.setAttribute('href',nu.trim())});mark()}return}
+ var u2=prompt('Paste the link (website, Google Maps, booking):','https://');if(!u2||u2==='https://')return;
+ var tx=prompt('Words to show for the link:','Open link');if(!tx)return;
+ var tgt=[].filter.call(it.querySelectorAll('[contenteditable]'),function(x){return x.matches('dd,p:not(.cost):not(.meta),figcaption,li')}).pop()||it.querySelector('[contenteditable]');
+ if(!tgt)return;var a2=document.createElement('a');a2.href=u2.trim();a2.target='_blank';a2.rel='noopener';a2.textContent=tx;tgt.append(' ',a2);mark();
 }
 document.addEventListener('click',function(e){var a=e.target.closest('a');if(a&&a.closest('main,header,footer')&&!a.closest('[data-ed]')){e.preventDefault()}},true);
 document.addEventListener('paste',function(e){if(!e.target.closest||!e.target.closest('[contenteditable]'))return;e.preventDefault();var t=(e.clipboardData||window.clipboardData).getData('text');document.execCommand('insertText',false,t)});
