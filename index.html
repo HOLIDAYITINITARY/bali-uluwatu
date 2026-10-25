@@ -302,5 +302,155 @@ tfoot th,tfoot td{background:var(--rose);font-weight:700;color:var(--berry)}
 <a href="https://pickyourtrail.com/tourism/bali/things-to-do-in-uluwatu" target="_blank" rel="noopener">Pickyourtrail</a>, <a href="https://baliuntold.com/destinations/uluwatu/at-night/" target="_blank" rel="noopener">Bali Untold</a>, <a href="https://thebeatbali.com/the-heart-beat/uluwatu-turns-on-the-nightlife/" target="_blank" rel="noopener">The Beat Bali</a>, <a href="https://thehoneycombers.com/bali/shopping-in-uluwatu-boutique-stores/" target="_blank" rel="noopener">Honeycombers</a>, <a href="https://kelanabykayla.com" target="_blank" rel="noopener">Kelana by Kayla</a>, <a href="https://beautyguidebali.com" target="_blank" rel="noopener">Beauty Guide Bali</a>, <a href="https://golfcorner.com.au" target="_blank" rel="noopener">Golf Corner</a>, <a href="https://www.grab.com/global/airport-rides/i-gusti-ngurah-rai-international-airport" target="_blank" rel="noopener">Grab</a>, <a href="https://www.thetraveler.org/bali-denpasar-airport-grab-gojek-pickup-guide-2026/" target="_blank" rel="noopener">The Traveler</a>, <a href="https://www.baliholidaysecrets.com/how-to-get-to-uluwatu/" target="_blank" rel="noopener">Bali Holiday Secrets</a>, <a href="https://wise.com/au/blog/gojek-in-bali" target="_blank" rel="noopener">Wise</a>, <a href="https://www.smartraveller.gov.au/destinations/asia/indonesia" target="_blank" rel="noopener">Smartraveller</a>, <a href="https://lovebali.baliprov.go.id/faq" target="_blank" rel="noopener">Love Bali</a> and <a href="https://www.getyourguide.com/bali-l347/horse-riding-tc891/" target="_blank" rel="noopener">GetYourGuide</a>. Villa photos are from each villa's Airbnb listing. Venue photos are from each venue's own website.</p>
 <p>Other photos are from Wikimedia Commons, cropped: <a href="https://commons.wikimedia.org/wiki/File:Cliff_at_Uluwatu_temple,_Bali.jpg" target="_blank" rel="noopener">Cliff at Uluwatu temple, Bali</a> by Emma THERY (CC BY-SA 4.0); <a href="https://commons.wikimedia.org/wiki/File:Kecak_dancers_cliffside_Uluwatu.jpg" target="_blank" rel="noopener">Kecak dancers cliffside Uluwatu</a> by Rollan Budi from Kuta, Bali,, Indonesia (CC BY-SA 2.0); <a href="https://commons.wikimedia.org/wiki/File:Bali_surfer_(7373617042).jpg" target="_blank" rel="noopener">Bali surfer (7373617042)</a> by Simon_sees (CC BY 2.0); <a href="https://commons.wikimedia.org/wiki/File:Padang_Padang_Beach_Bali.jpg" target="_blank" rel="noopener">Padang Padang Beach Bali</a> by TMFalkner (CC BY-SA 4.0); <a href="https://commons.wikimedia.org/wiki/File:Rice_terraces,_Bali.jpg" target="_blank" rel="noopener">Rice terraces, Bali</a> by Vyacheslav Argenberg (CC BY 4.0); <a href="https://commons.wikimedia.org/wiki/File:Thomas_beach_(48976502201).jpg" target="_blank" rel="noopener">Thomas beach (48976502201)</a> by Dan O&#x27;Cker from Adelaide, Australia (CC BY 2.0); <a href="https://commons.wikimedia.org/wiki/File:Pantai_suluban_blue_point_bali.jpg" target="_blank" rel="noopener">Pantai suluban blue point bali</a> by I made jon arinata (CC BY-SA 4.0); <a href="https://commons.wikimedia.org/wiki/File:The_Perfect_Sunset.jpg" target="_blank" rel="noopener">The Perfect Sunset</a> by Tuwuh (CC BY-SA 4.0); <a href="https://commons.wikimedia.org/wiki/File:Seafood_in_Jimbaran.jpg" target="_blank" rel="noopener">Seafood in Jimbaran</a> by Mx. Granger (CC0); <a href="https://commons.wikimedia.org/wiki/File:Garuda_Wisnu_Kencana_Cultural_Park_22.jpg" target="_blank" rel="noopener">Garuda Wisnu Kencana Cultural Park 22</a> by Terryosano1 (CC0); <a href="https://commons.wikimedia.org/wiki/File:Ngurah_Rai_International_Airport_International_Terminal,_2026,_10.jpg" target="_blank" rel="noopener">Ngurah Rai International Airport International Terminal, 2026, 10</a> by Chris Olszewski (CC BY-SA 4.0); <a href="https://commons.wikimedia.org/wiki/File:Nasi_campur,_Ubud,_Indonesia.jpg" target="_blank" rel="noopener">Nasi campur, Ubud, Indonesia</a> by Vyacheslav Argenberg (CC BY 4.0).</p>
 </footer>
+<script id="site-editor">
+(function(){
+var REPO='holidayitinitary/bali-uluwatu', FILE='index.html', KEY='bali_gh_token';
+var params=new URLSearchParams(location.search);
+if(!params.has('edit')) return;
+var API='https://api.github.com/repos/'+REPO+'/contents/';
+var baseDoc=null, sha=null, dirty=false;
+var TEXT='h1,h2,h3,h4,p,dt,dd,figcaption,.opts li,.steps li,.date span,.date b,.tag';
+var LISTS=[
+ ['ol.days','li','Add a day'],['dl.parts','div','Add a line'],['ul.cards','li','Add a place'],
+ ['ul.villas','li','Add a stay'],['ul.crewgrid','li','Add a person'],['ol.steps','li','Add a step'],
+ ['ul.opts','li','Add an idea'],['dl.flights','div','Add a flight']];
+function getTok(){try{return localStorage.getItem(KEY)||''}catch(e){return ''}}
+function setTok(t){try{localStorage.setItem(KEY,t)}catch(e){}}
+function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;e.setAttribute('data-ed','');return e}
+function b64enc(str){var bytes=new TextEncoder().encode(str),bin='';for(var i=0;i<bytes.length;i+=0x8000)bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+0x8000));return btoa(bin)}
+function b64dec(b){var bin=atob(b.replace(/\n/g,'')),u=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return new TextDecoder().decode(u)}
+function gh(path,opt){opt=opt||{};opt.headers={'Authorization':'Bearer '+getTok(),'Accept':'application/vnd.github+json'};return fetch(API+path,opt).then(function(r){if(!r.ok)return r.text().then(function(t){throw new Error(r.status+' '+t.slice(0,140))});return r.json()})}
+
+var css=document.createElement('style');css.setAttribute('data-ed','');css.textContent=
+'.edbar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:#5A0F33;color:#fff;padding:.6rem .8rem calc(.6rem + env(safe-area-inset-bottom));display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;font:600 .9rem Figtree,system-ui,sans-serif}'+
+'.edbar button,.edadd,.edtools button{font:inherit;border:0;border-radius:2rem;cursor:pointer}'+
+'.edbar button{padding:.55rem 1rem;background:#F9C6D6;color:#5A0F33}.edbar .edsave{background:#F28DB2;color:#fff}'+
+'.edbar .edmsg{flex:1 1 12rem;font-weight:500;font-size:.85rem;color:#FDE2EA}'+
+'body.ed-on{padding-bottom:6rem}'+
+'.ed-on [contenteditable]{outline:1.5px dashed #F28DB2;outline-offset:2px;border-radius:.25rem;min-width:1.5rem}'+
+'.ed-on [contenteditable]:focus{outline:2px solid #D6457F;background:#fff}'+
+'.edtools{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:.3rem;margin:.35rem 0 .1rem;font:600 .72rem Figtree,system-ui,sans-serif}'+
+'.edtools button{padding:.3rem .6rem;background:#fff;color:#8E1550;border:1px solid #F3B6CB}'+
+'.edtools button.del{color:#b0103f}'+
+'.edadd{display:block;margin:.6rem 0;padding:.55rem 1rem;background:#fff;color:#8E1550;border:1.5px dashed #D6457F !important;font:600 .85rem Figtree,system-ui,sans-serif}'+
+'.edpanel{position:fixed;inset:0;z-index:60;background:rgba(90,15,51,.55);display:grid;place-items:center;padding:1rem}'+
+'.edpanel>div{background:#fff;color:#5A0F33;border-radius:1rem;padding:1.2rem;max-width:26rem;width:100%;font:500 .95rem Figtree,system-ui,sans-serif;display:flex;flex-direction:column;gap:.7rem}'+
+'.edpanel input{font:inherit;padding:.6rem;border:1px solid #F3B6CB;border-radius:.6rem;width:100%;box-sizing:border-box}'+
+'.edpanel button{font:inherit;font-weight:600;padding:.6rem 1rem;border:0;border-radius:2rem;background:#D6457F;color:#fff;cursor:pointer}';
+document.head.appendChild(css);
+
+var bar=el('div','edbar'),msg=el('span','edmsg','Loading the latest version…');
+var bSave=el('button','edsave','Save changes'),bKey=el('button','','Key'),bExit=el('button','','Exit');
+bar.append(msg,bSave,bKey,bExit);
+function say(t){msg.textContent=t}
+function mark(){dirty=true;say('Unsaved changes. Tap Save when you\'re done.')}
+
+function keyPanel(cb){
+ var p=el('div','edpanel'),box=document.createElement('div'),inp=document.createElement('input'),ok=document.createElement('button');
+ box.innerHTML='<b>Paste your GitHub key</b><span>It stays on this phone only. You only need to do this once.</span>';
+ inp.type='password';inp.placeholder='github_pat_…';inp.value=getTok();ok.textContent='Save key';
+ ok.onclick=function(){setTok(inp.value.trim());p.remove();cb&&cb()};
+ box.append(inp,ok);p.append(box);document.body.appendChild(p);inp.focus();
+}
+
+function decorate(root){
+ // text
+ root.querySelectorAll(TEXT).forEach(function(n){
+  if(n.closest('[data-ed]')||n.closest('nav')||n.closest('[contenteditable]'))return;
+  n.setAttribute('contenteditable','true');n.setAttribute('spellcheck','true');
+ });
+ // items
+ LISTS.forEach(function(L){
+  root.querySelectorAll(L[0]).forEach(function(list){
+   [].forEach.call(list.children,function(it){if(!it.hasAttribute('data-ed')&&it.matches(L[1]))tools(it,list,L)});
+   var nx=list.nextElementSibling;
+   if(!(nx&&nx.classList.contains('edadd'))){
+    var a=el('button','edadd','+ '+L[2]);
+    a.onclick=function(){var items=[].filter.call(list.children,function(c){return c.matches(L[1])&&!c.hasAttribute('data-ed')});var src=items[items.length-1];if(!src)return;var c=clean(src.cloneNode(true));list.appendChild(c);decorate(c.parentNode);mark();var f=c.querySelector('[contenteditable]');f&&f.focus();c.scrollIntoView({block:'center',behavior:'smooth'})};
+    list.after(a);
+   }
+  });
+ });
+ // groups per section
+ root.querySelectorAll('main section').forEach(function(sec){
+  if(sec.querySelector(':scope>.edgroup'))return;
+  var bands=sec.querySelectorAll(':scope>h3.band');if(!bands.length)return;
+  var g=el('button','edadd edgroup','+ Add a group to this section');
+  g.onclick=function(){var bs=sec.querySelectorAll(':scope>h3.band'),h=bs[bs.length-1],lst=h.nextElementSibling;
+   var h2=clean(h.cloneNode(true));h2.textContent='New group';var l2=clean(lst.cloneNode(true));
+   [].slice.call(l2.children,1).forEach(function(c){c.remove()});
+   g.before(h2,l2);decorate(sec);mark();h2.focus();h2.scrollIntoView({block:'center',behavior:'smooth'})};
+  sec.appendChild(g);
+ });
+}
+function clean(n){n.querySelectorAll('[data-ed]').forEach(function(x){x.remove()});if(n.removeAttribute){n.removeAttribute('contenteditable')}n.querySelectorAll('[contenteditable]').forEach(function(x){x.removeAttribute('contenteditable');x.removeAttribute('spellcheck')});n.querySelectorAll('[style=""]').forEach(function(x){x.removeAttribute('style')});return n}
+function tools(it,list,L){
+ if(it.querySelector(':scope>.edtools'))return;
+ var t=el('div','edtools');
+ function btn(label,fn,cls){var b=document.createElement('button');b.type='button';b.textContent=label;if(cls)b.className=cls;b.onclick=function(e){e.preventDefault();e.stopPropagation();fn()};t.appendChild(b)}
+ btn('↑',function(){var p=it.previousElementSibling;if(p&&!p.hasAttribute('data-ed')){p.before(it);mark()}});
+ btn('↓',function(){var n=it.nextElementSibling;if(n&&!n.hasAttribute('data-ed')){n.after(it);mark()}});
+ btn('Copy',function(){var c=clean(it.cloneNode(true));it.after(c);decorate(list.parentNode);mark()});
+ if(it.querySelector('img'))btn('Photo',function(){photo(it.querySelector('img'))});
+ if(it.querySelector('a[href]'))btn('Link',function(){var a=it.querySelector('a[href]'),old=a.getAttribute('href');var nu=prompt('Paste the new link (website, Google Maps or booking):',old);if(nu&&nu!==old){it.querySelectorAll('a[href]').forEach(function(x){if(x.getAttribute('href')===old)x.setAttribute('href',nu.trim())});mark()}});
+ if(L[1]==='li'&&list.matches('ul.cards,ul.villas'))btn('Booked ✓',function(){var tg=it.querySelector('.cost')||it.querySelector('.tags .tag');if(tg){tg.textContent='Booked: '+(tg.textContent.replace(/^Booked:\s*/,''));mark()}});
+ btn('Delete',function(){var sib=[].filter.call(list.children,function(c){return c.matches(L[1])&&!c.hasAttribute('data-ed')});if(sib.length<2){alert('Keep at least one here. Edit it instead.');return}if(confirm('Delete this?')){it.remove();mark()}},'del');
+ it.appendChild(t);
+}
+function photo(img){
+ var f=document.createElement('input');f.type='file';f.accept='image/*';
+ f.onchange=function(){var file=f.files[0];if(!file)return;
+  var W=+img.getAttribute('width')||600,H=+img.getAttribute('height')||400;
+  var url=URL.createObjectURL(file),im=new Image();im.onload=function(){
+   var c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d'),r=Math.max(W/im.width,H/im.height),w=im.width*r,h=im.height*r;
+   x.drawImage(im,(W-w)/2,(H-h)/2,w,h);img.src=c.toDataURL('image/jpeg',0.85);img.removeAttribute('srcset');URL.revokeObjectURL(url);mark()};im.src=url};
+ f.click();
+}
+document.addEventListener('click',function(e){var a=e.target.closest('a');if(a&&a.closest('main,header,footer')&&!a.closest('[data-ed]')){e.preventDefault()}},true);
+document.addEventListener('paste',function(e){if(!e.target.closest||!e.target.closest('[contenteditable]'))return;e.preventDefault();var t=(e.clipboardData||window.clipboardData).getData('text');document.execCommand('insertText',false,t)});
+document.addEventListener('input',function(e){if(e.target.closest&&e.target.closest('[contenteditable]'))mark()});
+document.addEventListener('keydown',function(e){var n=e.target.closest&&e.target.closest('[contenteditable]');if(n&&e.key==='Enter'&&n.matches('h1,h2,h3,h4,dt')){e.preventDefault()}});
+window.addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue=''}});
+
+function serialize(){
+ var body=document.body.cloneNode(true);clean(body);body.classList.remove('ed-on');if(!body.className)body.removeAttribute('class');
+ var html=baseDoc.documentElement,attrs=[].map.call(html.attributes,function(a){return ' '+a.name+'="'+a.value+'"'}).join('');
+ return '<!doctype html>\n<html'+attrs+'>\n'+baseDoc.head.outerHTML+'\n'+body.outerHTML+'\n</html>\n';
+}
+function save(){
+ if(!getTok()){keyPanel(save);return}
+ say('Saving…');bSave.disabled=true;
+ var imgs=[].filter.call(document.querySelectorAll('main img,header img'),function(i){return i.src.indexOf('data:')===0});
+ var stamp=Date.now(),chain=Promise.resolve();
+ imgs.forEach(function(img,i){chain=chain.then(function(){var name='photos/e_'+stamp+'_'+i+'.jpg';say('Uploading photo '+(i+1)+' of '+imgs.length+'…');
+  return gh(name,{method:'PUT',body:JSON.stringify({message:'Add photo from editor',content:img.src.split(',')[1]})}).then(function(){img.setAttribute('src',name)})})});
+ chain.then(function(){return gh(FILE+'?ref=main&t='+Date.now())}).then(function(cur){
+  if(cur.sha!==sha&&!confirm('The site changed since you opened the editor. Save anyway and replace it?'))throw new Error('Not saved.');
+  return gh(FILE,{method:'PUT',body:JSON.stringify({message:'Edit from the website',content:b64enc(serialize()),sha:cur.sha})});
+ }).then(function(r){sha=r.content.sha;dirty=false;say('Saved ✓ The live site updates in about a minute.')})
+ .catch(function(e){say('Not saved: '+e.message+(String(e.message).indexOf('401')===0?' (check your key)':''))})
+ .then(function(){bSave.disabled=false});
+}
+bSave.onclick=save;bKey.onclick=function(){keyPanel()};
+bExit.onclick=function(){if(dirty&&!confirm('Leave without saving?'))return;dirty=false;location.href=location.pathname};
+
+function start(){
+ document.body.appendChild(bar);
+ if(!getTok()){keyPanel(start2);return}
+ start2();
+}
+function start2(){
+ say('Loading the latest version…');
+ gh(FILE+'?ref=main&t='+Date.now()).then(function(r){
+  sha=r.sha;baseDoc=new DOMParser().parseFromString(b64dec(r.content),'text/html');
+  baseDoc.querySelectorAll('[data-ed]').forEach(function(x){x.remove()});
+  var keep=bar;document.body.innerHTML=baseDoc.body.innerHTML;document.body.appendChild(keep);
+  document.body.classList.add('ed-on');decorate(document.body);
+  say('Edit mode. Tap any dashed text to change it. Tap Save when you\'re done.');
+ }).catch(function(e){say('Couldn\'t load: '+e.message+'. Tap Key to check your key.')});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
+</script>
 </body>
 </html>
